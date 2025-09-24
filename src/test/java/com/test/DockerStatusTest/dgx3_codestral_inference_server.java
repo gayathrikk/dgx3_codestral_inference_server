@@ -17,9 +17,9 @@ public class dgx3_codestral_inference_server  {
         String vmIpAddress = "172.20.23.156";
         String username = "appUser";
         String password = "Brain@123";
-        String containerId = "260e2bc07785";
+        String containerName = "codestral_inference_server"; 
 
-        System.out.println("codestral_inference_server Docker ID = " + containerId);
+       System.out.println("codestral_inference_server Docker = " + containerName);
 
         if (containerId.isEmpty()) {
             System.out.println("Container ID is required.");
@@ -35,7 +35,7 @@ public class dgx3_codestral_inference_server  {
 
             // Execute the docker inspect command to check the container's status
             ChannelExec channel = (ChannelExec) session.openChannel("exec");
-            channel.setCommand("docker inspect --format='{{.State.Status}}' " + containerId);
+            channel.setCommand("docker inspect --format='{{.State.Status}}' " + containerName);
             channel.setInputStream(null);
             channel.setErrStream(System.err);
             BufferedReader reader = new BufferedReader(new InputStreamReader(channel.getInputStream()));
@@ -122,3 +122,4 @@ public class dgx3_codestral_inference_server  {
         }
     }
 }
+
