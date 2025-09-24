@@ -17,12 +17,12 @@ public class dgx3_codestral_inference_server  {
         String vmIpAddress = "172.20.23.156";
         String username = "appUser";
         String password = "Brain@123";
-        String containerName = "codestral_inference_server"; 
+        String containerName = "codestral_inference_server"; // Docker name
 
-       System.out.println("codestral_inference_server Docker = " + containerName);
+        System.out.println("codestral_inference_server Docker = " + containerName);
 
-        if (containerId.isEmpty()) {
-            System.out.println("Container ID is required.");
+        if (containerName.isEmpty()) {  // Changed from containerId
+            System.out.println("Container name is required.");
             return;
         }
 
@@ -33,7 +33,7 @@ public class dgx3_codestral_inference_server  {
             session.setConfig("StrictHostKeyChecking", "no");
             session.connect();
 
-            // Execute the docker inspect command to check the container's status
+            // Execute the docker inspect command using the docker name
             ChannelExec channel = (ChannelExec) session.openChannel("exec");
             channel.setCommand("docker inspect --format='{{.State.Status}}' " + containerName);
             channel.setInputStream(null);
@@ -54,7 +54,6 @@ public class dgx3_codestral_inference_server  {
             channel.disconnect();
             session.disconnect();
 
-            // If container is not running, send alert
             if (!isRunning) {
                 sendEmailAlert("Hi,\n\n🚨 This is codestral_inference_server Docker. I am currently down. Kindly restart the container at your earliest convenience.");
                 assert false : "Container is not in the expected state.";
@@ -68,13 +67,11 @@ public class dgx3_codestral_inference_server  {
     public void sendEmailAlert(String messageBody) {
         String from = "automationsoftware25@gmail.com";
 
-        // TO recipients
         String[] to = {
             "nitheshkumarsundhar@gmail.com",
             "ramanan@htic.iitm.ac.in"
         };
 
-        // CC recipients
         String[] cc = {
             "divya.d@htic.iitm.ac.in",
             "venip@htic.iitm.ac.in",
@@ -84,7 +81,7 @@ public class dgx3_codestral_inference_server  {
 
         String subject = "Docker Container Alert - codestral_inference_server";
         final String username = "automationsoftware25@gmail.com";
-        final String password = "wjzcgaramsqvagxu"; // App-specific password
+        final String password = "wjzcgaramsqvagxu";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -101,8 +98,6 @@ public class dgx3_codestral_inference_server  {
         try {
             Message message = new MimeMessage(mailSession);
             message.setFrom(new InternetAddress(from, "Docker Monitor"));
-
-            // Convert arrays to comma-separated strings
             message.setRecipients(
                 Message.RecipientType.TO,
                 InternetAddress.parse(String.join(",", to))
@@ -122,4 +117,3 @@ public class dgx3_codestral_inference_server  {
         }
     }
 }
-
