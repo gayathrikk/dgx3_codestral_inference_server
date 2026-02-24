@@ -15,8 +15,8 @@ public class dgx3_codestral_inference_server  {
     public void codestral_inference_server() {
 
         String vmIpAddress = "172.20.23.156";
-        String username = "appUser";
-        String password = "Brain@123";
+        String username = "hbp";
+        String password = "hbpsgbclab@123";
         String containerName = "codestral_inference_server"; // Docker name
 
         System.out.println("codestral_inference_server Docker = " + containerName);
@@ -117,3 +117,4 @@ public class dgx3_codestral_inference_server  {
         }
     }
 }
+
